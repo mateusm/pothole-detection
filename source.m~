@@ -1,0 +1,15 @@
+% Trabalho de final de PDI 
+
+% Felipe Oliveira, Mateus Meruvia, Matheus Garcia 
+
+% Detection and Counting of Pothole using Image Processing Techniques 
+%######################################################################
+
+%preparando a imagem
+%leitura
+img = imread('images/buraco2.jpg');
+img = resize ()
+imshow(img);
+
+
+
