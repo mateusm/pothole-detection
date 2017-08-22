@@ -4,9 +4,11 @@
 
 % Detection and Counting of Pothole using Image Processing Techniques 
 %-----------------------------------------------------------------------------------------------
-
+clc;
+clear;
+close all;
 %lê imagem
-original = imread('images/buraco21.jpg');
+original = imread('images/buraco22.jpg');
 img = original;
 
 
@@ -20,28 +22,25 @@ subplot(1, 2, 1); imshow(original); title('Original');
 % - Median-filtering
 img = imresize (img, [NaN 400]);
 img = rgb2gray(img);
-img = medfilt2(img, [7 7]);
+img = medfilt2(img, [5 5]);
 
 
-subplot(1, 2, 2); imshow(img); title('Preparada');
+
 
 % - difference gaussian filter ---- ACHO QUE ESSE FILTRO TA CAGANDO TUDO!!!
 % TEM QUE ARRUMAR ELE, TALVEZ OS PARAMETROS.. NAO SEI...
 % https://github.com/memimo/Timothee/blob/master/matlab/DoG.m
 gaussian1 = imgaussfilt(img, 15);
-gaussian2 = imgaussfilt(img, 10);
+gaussian2 = imgaussfilt(img, 5);
 img = gaussian1 - gaussian2;
 
 
-figure;
-imshow(img); title('Preparada');
+
+subplot(1, 2, 2); imshow(img); title('Pre processed');
 
 %############################################# END - IMAGE PRE-PROCESSING
 
 figure;
-
-
-
 % IMAGE SEGMENTATION METHODS
 %############################################
 
@@ -98,12 +97,12 @@ subplot(2,2,4), imshow(img_cmeans); title('CMEANS');
 %---------------------------------------------
 otsu_convexhull =  bwconvhull(img_otsu, 'objects');
 figure;
-subplot(2,2,1), imshow(otsu_convexhull); title('CONVEX HULL');
+subplot(2, 2, 1), imshow(otsu_convexhull); title('CONVEX HULL');
 [x, y] = bwlabel(otsu_convexhull);
 %disp(y);
+
+
 %---------------------------------------------
-
-
 % #2 - Number of Black and white-connected components
 % funcao nativa MATLAB (https://www.mathworks.com/help/images/ref/bwconncomp.html)
 %----------------------------------------------
@@ -129,16 +128,5 @@ subplot(2,2,2), imshow(otsu_bwcomp); title('BW Components');
 
 
 
-
-
 % PERFORMANCE MEASURES FOR VALIDATION OF IMAGE SEGMENTATION
 %############################################################
-
-
-
-figure;
-subplot(2,1,1), imshow(original); title('Original');
-subplot(2,1,2), imshow(img); title('Preparada');
-
-
-
