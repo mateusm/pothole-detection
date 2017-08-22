@@ -6,8 +6,11 @@
 %-----------------------------------------------------------------------------------------------
 
 %lê imagem
-original = imread('images/buraco9.jpg');
+original = imread('images/buraco21.jpg');
 img = original;
+
+
+subplot(1, 2, 1); imshow(original); title('Original');
 
 
 % IMAGE PRE-PROCESSING
@@ -15,17 +18,27 @@ img = original;
 % - redimenciona imagem
 % - altera para escala de cinza
 % - Median-filtering
-img = imresize (img, [NaN 500]);
+img = imresize (img, [NaN 400]);
 img = rgb2gray(img);
 img = medfilt2(img, [7 7]);
+
+
+subplot(1, 2, 2); imshow(img); title('Preparada');
 
 % - difference gaussian filter ---- ACHO QUE ESSE FILTRO TA CAGANDO TUDO!!!
 % TEM QUE ARRUMAR ELE, TALVEZ OS PARAMETROS.. NAO SEI...
 % https://github.com/memimo/Timothee/blob/master/matlab/DoG.m
-filtDoG = DoG(9,5,10);
-img = imfilter(img, filtDoG);
+gaussian1 = imgaussfilt(img, 15);
+gaussian2 = imgaussfilt(img, 10);
+img = gaussian1 - gaussian2;
+
+
+figure;
+imshow(img); title('Preparada');
+
 %############################################# END - IMAGE PRE-PROCESSING
 
+figure;
 
 
 
@@ -86,6 +99,8 @@ subplot(2,2,4), imshow(img_cmeans); title('CMEANS');
 otsu_convexhull =  bwconvhull(img_otsu, 'objects');
 figure;
 subplot(2,2,1), imshow(otsu_convexhull); title('CONVEX HULL');
+[x, y] = bwlabel(otsu_convexhull);
+%disp(y);
 %---------------------------------------------
 
 
@@ -124,4 +139,6 @@ subplot(2,2,2), imshow(otsu_bwcomp); title('BW Components');
 figure;
 subplot(2,1,1), imshow(original); title('Original');
 subplot(2,1,2), imshow(img); title('Preparada');
+
+
 
